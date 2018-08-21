@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const componentSchema = require('../Component/component.schema.server');
 const applicationSchema = mongoose.Schema({
   name: String,
-  components: [componentSchema]
+  components: [{type: mongoose.Schema.Types.ObjectId, ref: 'ComponentModel'}]
 }, {collection: 'application'});
 module.exports = applicationSchema;

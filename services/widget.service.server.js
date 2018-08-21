@@ -18,11 +18,11 @@ module.exports = function (app) {
   // /api/view/:vid/widget
   // Creates a new widget for view whose primary key is vid
 
-  app.post('/component/:cid/view', createViewForComponent);
-  function createViewForComponent(req, res){
-    viewModel.createViewForComponent(req.params.cid, req.body)
-    .then((view)=>{
-      return res.json(view);
+  app.post('/view/:vid/widget', createWidgetForView);
+  function createWidgetForView(req, res){
+    widgetModel.createWidgetForView(req.params.vid, req.body)
+    .then((widget)=>{
+      return res.json(widget);
     });
   }
 
@@ -33,9 +33,9 @@ module.exports = function (app) {
   // /api/widget/:wid
   // Updates widget whose primary key is wid with data in request body
 
-  app.put('/view/:vid', updateView);
-  function updateView(req, res){
-    viewModel.updateView(req.params.vid)
+  app.put('/widget/:wid', updateWidget);
+  function updateWidget(req, res){
+    widgetModel.updateWidget(req.params.wid, req.body)
     .then((msg)=>res.json(msg));
   }
 
@@ -44,10 +44,9 @@ module.exports = function (app) {
   // /api/widget/:wid
   // Deletes widget whose primary key is wid
 
-  app.delete('/view/:cid', deleteView);
-  function deleteView(req, res){
-    viewModel.deleteView(req.params.vid)
+  app.delete('/widget/:wid', deleteWidget);
+  function deleteWidget(req, res){
+    widgetModel.deleteWidget(req.params.wid)
     .then((msg)=>res.json(msg));
   }
-
 };

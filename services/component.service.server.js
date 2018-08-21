@@ -1,7 +1,7 @@
 module.exports = function (app) {
   require ('../data/db.js')();
   const applicationModel = require ('../models/application/application.model.server');
-  const componentModel = require('../models/Component/component.model.server');
+  const componentModel = require('../models/Component/Component.model.server');
 
 
 

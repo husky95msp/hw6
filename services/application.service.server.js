@@ -2,6 +2,7 @@ module.exports = function (app) {
   require ('../data/db.js')();
   const applicationModel = require ('../models/application/application.model.server');
   const developerModel = require('../models/developer/developer.model.server');
+  const componentModel = require('../models/Component/Component.model.server');
 
 
   // GET
@@ -13,8 +14,16 @@ module.exports = function (app) {
     .then((apps)=>res.send(apps));
   }
 
+  app.get('/application/:aid', findApplicationById);
+  function findApplicationById(req, res){
+    applicationModel.findApplicationById(req.params.aid)
+    .then((apps)=>res.send(apps));
+  }
 
-
+  app.get('/hello', hello);
+  function hello(req, res){
+    res.send("hello World");
+  }
 
   // POST
   // /api/developer/:did/application
@@ -59,7 +68,8 @@ module.exports = function (app) {
   // Deletes application whose primary key is aid. All related services, components, and routings are also removed.
   app.delete('/application/:aid', deleteApplication);
   function deleteApplication(req, res){
-    applicationModel.deleteApplication(req.params.aid)
+    componentModel.deleteApplication(req.params.aid).then(()=>
+    applicationModel.deleteApplication(req.params.aid))
     .then((application)=>res.json(application));
   }
 

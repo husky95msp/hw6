@@ -1,29 +1,50 @@
 const mongoose = require('mongoose');
-const applicationSchema = require('./application.schema.server');
-const applicationModel = mongoose.model('ApplicationModel', applicationSchema);
+const widgetSchema = require('./widget.schema.server');
+const widgetModel = mongoose.model('WidgetModel', widgetSchema);
+// let applicationModel = require('../application/application.model.server');
+let viewModel = require('../view/view.model.server');
 
-createApplication = app => applicationModel.create(app)
 
-findAllApplications = () => applicationModel.find()
+createWidgetForView = (viewId, wid) => {
 
-findApplicationById = (appId)=> applicationModel.findById(appId)
+  return widgetModel.create(wid).then((w)=>{
+    return viewModel.findViewById(viewId)
+    .then((view)=>{
+      if(view){
+        view.widgets.push(w._id);
 
-updateApplication = (appId, newApp) =>
-  applicationModel.update({_id: appId}, {
-    $set: newApp
+        viewModel.updateView(viewId, view);
+        return w;
+      }
+      return this;
+    });
   });
+};
 
-deleteApplication = appId => applicationModel.remove({_id: appId})
 
-updateApplicationComponent = (appId, compId, newApp) =>
-  applicationModel.update({_id: appId, 'components._id': compId}, {
-    $set: {'components.$.name':newApp.name}
+findWidgetById = (id) => widgetModel.findById(id)
+findAllWidgetsForView = (viewId) => {
+
+  return viewModel.findViewById(viewId)
+  .then((view)=>{
+    if(view){
+      return view.widgets
+    }
+  })
+};
+
+updateWidget = (wId, newWid) =>{
+  return widgetModel.update({_id: wId}, {
+    $set: newWid
   });
+  // return applicationModel.updateApplicationComponent(appId, compId, newApp)
+};
+//
+deleteWidget = (wId) =>widgetModel.remove({_id: wId});
 module.exports = {
-  createApplication,
-  findAllApplications,
-  findApplicationById,
-  updateApplication,
-  deleteApplication,
-  updateApplicationComponent
+  createWidgetForView,
+  findAllWidgetsForView,
+  updateWidget,
+  deleteWidget,
+  findWidgetById
 };

@@ -1,7 +1,7 @@
 module.exports = function (app) {
   require ('../data/db.js')();
   const viewModel = require ('../models/view/view.model.server');
-
+  
   // GET
   // /api/component/:cid/view
   // Retrieves all views for component whose primary key is cid
@@ -32,7 +32,7 @@ module.exports = function (app) {
 
   app.put('/view/:vid', updateView);
   function updateView(req, res){
-    viewModel.updateView(req.params.vid)
+    viewModel.updateView(req.params.vid, req.body)
     .then((msg)=>res.json(msg));
   }
 
@@ -42,7 +42,7 @@ module.exports = function (app) {
   // /api/view/:vid
   // Deletes view whose primary key is vid
 
-  app.delete('/view/:cid', deleteView);
+  app.delete('/view/:vid', deleteView);
   function deleteView(req, res){
     viewModel.deleteView(req.params.vid)
     .then((msg)=>res.json(msg));
